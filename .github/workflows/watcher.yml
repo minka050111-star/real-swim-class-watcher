@@ -1,0 +1,47 @@
+name: Swim Class Watcher (real-time loop)
+
+on:
+  schedule:
+    # 5시간마다 새 실행을 시작한다. 각 실행은 최대 5시간30분 동안
+    # 25초 간격으로 계속 확인하다가 스스로 종료된다.
+    # concurrency 설정 덕분에, 새 실행이 시작되면 이전 실행은 즉시 취소되어
+    # 빈틈 없이 이어서 감시하는 효과를 낸다.
+    - cron: "0 */5 * * *"
+  workflow_dispatch:      # Actions 탭에서 수동으로 "Run workflow" 눌러서 테스트 가능
+    inputs:
+      test_seconds:
+        description: "테스트로 몇 초만 돌려볼지 (비워두면 5시간30분 정상 실행)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: swim-watcher
+  cancel-in-progress: true
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355   # 5시간 55분 (GitHub 최대 6시간 제한보다 여유있게)
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+
+      - name: Run watcher loop (약 25초 간격으로 최대 5시간30분 반복)
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          CHECK_INTERVAL_SECONDS: "25"
+          RUN_DURATION_SECONDS: ${{ (github.event.inputs.test_seconds != '' && github.event.inputs.test_seconds) || '19800' }}
+        run: python watcher.py
