@@ -38,13 +38,13 @@
   "00211_I000016": {
     "name": "삼일수영장 강습수영(단체) - 새벽수영 [06시화목]기초~초중급:처음~한팔접영 / 중학생~성인 화목(성인요금)",
     "time": "화목 06:00~06:50",
-    "remain": "1명",
+    "remain": "마감",
     "url": "https://sports.idongjak.or.kr?category2=ALL&comcd=DONGJAK07&center=DONGJAK07&category1=01&action=read&page=1&class_cd=00211&item_cd=I000016"
   },
   "00211_I000018": {
     "name": "삼일수영장 강습수영(단체) - 새벽수영 [06시화목]기초~초중급:처음~한팔접영 / 중학생~성인 화목(청소년요금)",
     "time": "화목 06:00~06:50",
-    "remain": "1명",
+    "remain": "마감",
     "url": "https://sports.idongjak.or.kr?category2=ALL&comcd=DONGJAK07&center=DONGJAK07&category1=01&action=read&page=1&class_cd=00211&item_cd=I000018"
   },
   "00002_I000015": {
